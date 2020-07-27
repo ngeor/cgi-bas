@@ -1,0 +1,28 @@
+FROM rust AS builder
+
+WORKDIR /usr/src/myapp
+COPY basic-interpreter-rust/ ./
+RUN cargo install --path .
+
+FROM httpd
+
+# Folder structure
+# /
+# |- basic <- common ancestor (batch file)
+#    |
+#    |- src <- BAS files live here, volume
+
+RUN mkdir -p /basic/src
+
+VOLUME [ "/basic/src" ]
+
+COPY --from=builder /usr/local/cargo/bin/basic_interpreter_rust /usr/local/bin/
+
+#
+# The following is specific to the httpd image
+#
+
+COPY interpreter-httpd.conf /usr/local/apache2/conf/httpd.conf
+
+# so that the BAS programs can read/write files in their folder
+RUN chown daemon:www-data /basic/src

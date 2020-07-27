@@ -279,3 +279,17 @@ For maintainability, merged all REST API QBasic programs into one file:
 | Docker (outside) |                 1769.74 |
 | Docker (inside)  |                 1269.44 |
 | Apache           |                 1621.27 |
+
+# v0.5.0 (2020-07-27)
+
+Using a rust basic interpreter (no DOSBox involved).
+
+| Experiment           | Average duration (msec) |
+| -------------------- | ----------------------: |
+| DOS                  |                  1756.8 |
+| Docker (outside)     |                  1702.3 |
+| Docker (inside)      |                  1359.1 |
+| Apache (launcher)    |                  1686.6 |
+| Apache (interpreter) |                   265.4 |
+
+The performance improvement is dramatic.
