@@ -13,7 +13,7 @@ PERF_EXE = ./perf/target/release/perf.exe
 # How many repetitions to run when doing performance testing
 PERF_COUNT = 1
 
-all: build-perf build-launcher build-docker-standalone build-docker-httpd
+all: build-perf build-launcher build-docker-standalone build-docker-httpd build-docker-interpreter-httpd
 
 #
 # Launcher
@@ -26,15 +26,6 @@ $(LAUNCHER_EXE): $(wildcard basic-launcher-rust/src/*.rs) basic-launcher-rust/Ca
 
 clean-launcher:
 	rm -rf basic-launcher-rust/target
-
-#
-# Interpreter
-#
-
-# It's not really being built, only within a Docker image
-
-clean-interpreter:
-	rm -rf basic-interpreter-rust/target
 
 #
 # Performance
@@ -107,4 +98,4 @@ test: run-hello-dos run-hello-dos-qb run-hello-docker run-hello-docker-qb run-ht
 start-interpreter-httpd-foreground: build-docker-interpreter-httpd
 	docker run --rm --name basic-interpreter-httpd -v $(PWD_UNIX)/basic/rest-qb-direct:/basic/src -p 8080:80 basic-interpreter-httpd
 
-clean: clean-basic-launcher-rust clean-basic-interpreter-rust clean-perf
+clean: clean-basic-launcher-rust clean-perf
