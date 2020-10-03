@@ -14,7 +14,12 @@ RUN apt-get update \
   && apt-get install -y curl ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
-RUN curl -L https://github.com/ngeor/rusty-basic/releases/download/v0.3.0/rusty_basic -o /usr/local/bin/rusty_basic && chmod +x /usr/local/bin/rusty_basic
+# Get rusty_basic from GitHub releases
+RUN curl -L https://github.com/ngeor/rusty-basic/releases/download/v0.4.0/rusty_basic -o /usr/local/bin/rusty_basic && chmod +x /usr/local/bin/rusty_basic
+
+# To run with local binary instead:
+# COPY ./rusty_basic /usr/local/bin/rusty_basic
+# RUN chmod +x /usr/local/bin/rusty_basic
 
 #
 # The following is specific to the httpd image

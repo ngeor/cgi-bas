@@ -293,3 +293,8 @@ Using a rust basic interpreter (no DOSBox involved).
 | Apache (interpreter) |                   265.4 |
 
 The performance improvement is dramatic.
+
+# v0.6.0 (2020-10-03)
+
+Performance of the interpreter has dropped from 265 to 429msec
+from rusty_basic 0.3.0 to 0.4.0.
