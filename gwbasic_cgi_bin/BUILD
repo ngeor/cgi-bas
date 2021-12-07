@@ -6,6 +6,6 @@ rust_binary(
     name = "gwbasic_cgi_bin",
     srcs = ["main.rs"],
     deps = [
-        "//basic/dosbox_wrapper:dosbox_lib",
+        "//dosbox_wrapper:dosbox_lib",
     ],
 )

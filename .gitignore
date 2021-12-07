@@ -3,3 +3,6 @@
 **/target/
 .vagrant/
 bazel-*/
+TODO.DAT
+# in case of copying over Linux binary for tests
+rusty_basic

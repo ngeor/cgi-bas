@@ -15,7 +15,7 @@ if [[ ! -d $TARGET ]]; then
 fi
 
 function copy_binary {
-    bazel build //basic/$1
+    bazel build //$1
 
     local BAZEL_BIN=$(bazel info bazel-bin)
     if [[ ! -d $BAZEL_BIN ]]; then
@@ -23,7 +23,7 @@ function copy_binary {
         exit 3
     fi
 
-    local BINARY="$BAZEL_BIN/basic/$1/$1"
+    local BINARY="$BAZEL_BIN/$1/$1"
     if [[ ! -r $BINARY ]]; then
         echo "$BINARY does not exist or is not a file"
         exit 4

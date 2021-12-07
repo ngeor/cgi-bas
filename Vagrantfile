@@ -79,12 +79,6 @@ Vagrant.configure("2") do |config|
     ln -f -s /usr/bin/bazel-4.2.1 /usr/bin/bazel
   SHELL
 
-  # Docker
-  config.vm.provision "shell", inline: <<-SHELL
-    apt-get install -y docker-compose
-    addgroup vagrant docker
-  SHELL
-
   # Rust
   config.vm.provision "shell", inline: <<-SHELL
     apt-get install -y cargo cargo-doc rustfmt rust-clippy
@@ -96,7 +90,7 @@ Vagrant.configure("2") do |config|
   SHELL
 
   # apache
-  config.vm.provision "file", source: "./basic/httpd/extra.conf", destination: "~/extra.conf"
+  config.vm.provision "file", source: "./httpd/extra.conf", destination: "~/extra.conf"
   config.vm.provision "shell", inline: <<-SHELL
     apt-get install -y apache2
     # active cgi module https://httpd.apache.org/docs/current/mod/mod_cgi.html

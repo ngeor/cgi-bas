@@ -61,7 +61,7 @@ gwbasic_binary = rule(
     attrs = {
         "src": attr.label(mandatory = True, allow_single_file = True),
         "_basic_dosbox_wrapper": attr.label(
-            default = "//basic/gwbasic_dosbox_wrapper",
+            default = "//gwbasic_dosbox_wrapper",
             cfg = "exec",
             executable = True,
         ),
@@ -75,7 +75,7 @@ qbasic_binary = rule(
     attrs = {
         "src": attr.label(mandatory = True, allow_single_file = True),
         "_basic_dosbox_wrapper": attr.label(
-            default = "//basic/qbasic_dosbox_wrapper",
+            default = "//qbasic_dosbox_wrapper",
             cfg = "exec",
             executable = True,
         ),
