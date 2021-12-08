@@ -5,40 +5,33 @@ use std::path::*;
 
 extern crate dosbox_lib;
 
-use dosbox_lib::{find_dosbox, find_file_in_path, DOSBox};
+use dosbox_lib::{find_file_in_path, DOSBox};
 
 fn main() -> Result<(), String> {
-    match find_dosbox() {
-        Some(dosbox) => run(dosbox),
-        None => Err("Could not find DOSBox".to_string())
-    }
-}
-
-fn run(dosbox: PathBuf) -> Result<(), String> {
     match find_file_in_path("QBASIC.EXE") {
-        Some(qbasic) => run2(dosbox, qbasic),
+        Some(qbasic) => run2(qbasic),
         None => Err("Could not find QBASIC.EXE in PATH".to_string())
     }
 }
 
-fn run2(dosbox: PathBuf, qbasic: PathBuf) -> Result<(), String> {
+fn run2(qbasic: PathBuf) -> Result<(), String> {
     let args: Vec<String> = env::args().skip(1).collect();
     let bas_file = PathBuf::from(&args[0]);
     if bas_file.is_file() {
-        run3(dosbox, qbasic, bas_file)
+        run3(qbasic, bas_file)
     } else {
         Err(format!("Could not find bas file {}", bas_file.display()))
     }
 }
 
-fn run3(dosbox: PathBuf, qbasic: PathBuf, bas_file: PathBuf) -> Result<(), String> {
+fn run3(qbasic: PathBuf, bas_file: PathBuf) -> Result<(), String> {
     // copy qbasic into the same folder as the BAS_FILE
     let cwd = bas_file.parent().unwrap();
     let qbasic_copy = cwd.join("QBASIC.EXE");
     copy_without_permissions(&qbasic, &qbasic_copy).unwrap();
     let cmd = format!("QBASIC.EXE /RUN {}", bas_file.file_name().unwrap().to_str().unwrap());
     DOSBox::new()
-        .dosbox(dosbox)
+        .find_dosbox()?
         .cwd(cwd)
         .command(cmd)
         .run()

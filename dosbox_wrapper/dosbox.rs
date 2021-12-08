@@ -27,6 +27,13 @@ impl DOSBox {
         self
     }
 
+    pub fn find_dosbox(&mut self) -> Result<&mut Self, String> {
+        match super::find::find_dosbox() {
+            Some(dosbox) => Ok(self.dosbox(dosbox)),
+            None => Err("Could not find dosbox in PATH".to_string())
+        }
+    }
+
     pub fn cwd<T>(&mut self, cwd: T) -> &mut Self where PathBuf: From<T> {
         self.cwd = PathBuf::from(cwd);
         self

@@ -5,25 +5,18 @@ use std::path::*;
 
 extern crate dosbox_lib;
 
-use dosbox_lib::{find_dosbox, find_file_in_path, DOSBox};
+use dosbox_lib::{find_file_in_path, DOSBox};
 
 fn main() -> Result<(), String> {
-    match find_dosbox() {
-        Some(dosbox) => run(dosbox),
-        None => Err("Could not find DOSBox".to_string())
-    }
-}
-
-fn run(dosbox: PathBuf) -> Result<(), String> {
     match find_file_in_path("GWBASIC.EXE") {
-        Some(gwbasic) => run2(dosbox, gwbasic),
+        Some(gwbasic) => run2(gwbasic),
         None => Err("Could not find GWBASIC.EXE in PATH".to_string())
     }
 }
 
-fn run2(dosbox: PathBuf, gwbasic: PathBuf) -> Result<(), String> {
+fn run2(gwbasic: PathBuf) -> Result<(), String> {
     match find_bas_file() {
-        Ok(bas_file) => run3(dosbox, gwbasic, bas_file),
+        Ok(bas_file) => run3(gwbasic, bas_file),
         Err(err) => Err(err)
     }
 }
@@ -48,7 +41,7 @@ fn find_bas_file() -> Result<PathBuf, String> {
     }
 }
 
-fn run3(dosbox: PathBuf, gwbasic: PathBuf, bas_file: PathBuf) -> Result<(), String> {
+fn run3(gwbasic: PathBuf, bas_file: PathBuf) -> Result<(), String> {
     // copy GWBASIC into the same folder as the BAS_FILE
     let cwd = bas_file.parent().unwrap();
     let stdin_path = cwd.join("STDIN.TXT");
@@ -57,7 +50,7 @@ fn run3(dosbox: PathBuf, gwbasic: PathBuf, bas_file: PathBuf) -> Result<(), Stri
     copy_without_permissions(&gwbasic, &gwbasic_copy).unwrap();
     let cmd = format!("GWBASIC.EXE {}", bas_file.file_name().unwrap().to_str().unwrap());
     DOSBox::new()
-        .dosbox(dosbox)
+        .find_dosbox()?
         .cwd(cwd)
         .command(cmd)
         .pass_through_env("REQUEST_METHOD")
