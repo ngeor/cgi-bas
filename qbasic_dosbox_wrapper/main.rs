@@ -5,8 +5,7 @@ use std::path::*;
 
 extern crate dosbox_lib;
 
-use dosbox_lib::dosbox::DOSBox;
-use dosbox_lib::find::{find_dosbox, find_file_in_path};
+use dosbox_lib::{find_dosbox, find_file_in_path, DOSBox};
 
 fn main() -> Result<(), String> {
     match find_dosbox() {

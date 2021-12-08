@@ -1,2 +1,5 @@
-pub mod dosbox;
-pub mod find;
+mod dosbox;
+mod find;
+
+pub use self::dosbox::*;
+pub use self::find::*;

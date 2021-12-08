@@ -3,8 +3,7 @@ use std::path::PathBuf;
 
 extern crate dosbox_lib;
 
-use dosbox_lib::find::find_dosbox;
-use dosbox_lib::dosbox::DOSBox;
+use dosbox_lib::{find_dosbox, DOSBox};
 
 fn main() -> Result<(), String> {
     match find_dosbox() {
