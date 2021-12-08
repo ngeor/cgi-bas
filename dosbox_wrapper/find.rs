@@ -1,8 +1,6 @@
 use std::env;
 use std::path::*;
 
-use path_util::join;
-
 pub fn find_dosbox() -> Option<PathBuf> {
     let is_windows = "windows".eq_ignore_ascii_case(env::consts::OS);
     let dosbox_in_path = find_file_in_path(
@@ -20,7 +18,7 @@ pub fn find_file_in_path(filename: &str) -> Option<PathBuf> {
     match env::var_os(key) {
         Some(paths) => {
             for path in env::split_paths(&paths) {
-                let candidate = join(&path, filename);
+                let candidate = path.join(filename);
                 if candidate.is_file() {
                     return Some(candidate);
                 }

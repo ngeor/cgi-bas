@@ -1,4 +1,3 @@
-use std::collections::hash_map::HashMap;
 use std::env;
 use std::fs::{self, File};
 use std::io::{self, Write};
@@ -6,9 +5,8 @@ use std::path::*;
 
 extern crate dosbox_lib;
 
-use dosbox_lib::dosbox::run_dosbox;
+use dosbox_lib::dosbox::DOSBox;
 use dosbox_lib::find::{find_dosbox, find_file_in_path};
-use dosbox_lib::path_util::join;
 
 fn main() -> Result<(), String> {
     match find_dosbox() {
@@ -54,16 +52,19 @@ fn find_bas_file() -> Result<PathBuf, String> {
 fn run3(dosbox: PathBuf, gwbasic: PathBuf, bas_file: PathBuf) -> Result<(), String> {
     // copy GWBASIC into the same folder as the BAS_FILE
     let cwd = bas_file.parent().unwrap();
-    let stdin_path = join(&cwd, "STDIN.TXT");
+    let stdin_path = cwd.join("STDIN.TXT");
     create_stdin(&stdin_path).unwrap();
-    let gwbasic_copy = join(cwd, "GWBASIC.EXE");
+    let gwbasic_copy = cwd.join("GWBASIC.EXE");
     copy_without_permissions(&gwbasic, &gwbasic_copy).unwrap();
     let cmd = format!("GWBASIC.EXE {}", bas_file.file_name().unwrap().to_str().unwrap());
-    let mut batch_env : HashMap<String, String> = HashMap::new();
-    batch_env.insert("REQUEST_METHOD".to_string(), env::var("REQUEST_METHOD").unwrap_or_default());
-    batch_env.insert("CONTENT_TYPE".to_string(), env::var("CONTENT_TYPE").unwrap_or_default());
-    batch_env.insert("STDIN".to_string(), "STDIN.TXT".to_string());
-    run_dosbox(dosbox, cwd, &cmd, &batch_env).unwrap();
+    DOSBox::new()
+        .dosbox(dosbox)
+        .cwd(cwd)
+        .command(cmd)
+        .pass_through_env("REQUEST_METHOD")
+        .pass_through_env("CONTENT_TYPE")
+        .env("STDIN", "STDIN.TXT")
+        .run().unwrap();
     fs::remove_file(gwbasic_copy).unwrap();
     fs::remove_file(stdin_path).unwrap();
     Ok(())

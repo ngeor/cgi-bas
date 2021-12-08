@@ -14,6 +14,5 @@ rust_library(
         "lib.rs",
         "dosbox.rs",
         "find.rs",
-        "path_util.rs",
     ],
 )

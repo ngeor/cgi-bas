@@ -1,4 +1,3 @@
-use std::collections::hash_map::HashMap;
 use std::env;
 use std::fs::{self, File};
 use std::io;
@@ -6,9 +5,8 @@ use std::path::*;
 
 extern crate dosbox_lib;
 
-use dosbox_lib::dosbox::run_dosbox;
+use dosbox_lib::dosbox::DOSBox;
 use dosbox_lib::find::{find_dosbox, find_file_in_path};
-use dosbox_lib::path_util::join;
 
 fn main() -> Result<(), String> {
     match find_dosbox() {
@@ -37,10 +35,15 @@ fn run2(dosbox: PathBuf, qbasic: PathBuf) -> Result<(), String> {
 fn run3(dosbox: PathBuf, qbasic: PathBuf, bas_file: PathBuf) -> Result<(), String> {
     // copy qbasic into the same folder as the BAS_FILE
     let cwd = bas_file.parent().unwrap();
-    let qbasic_copy = join(cwd, "QBASIC.EXE");
+    let qbasic_copy = cwd.join("QBASIC.EXE");
     copy_without_permissions(&qbasic, &qbasic_copy).unwrap();
     let cmd = format!("QBASIC.EXE /RUN {}", bas_file.file_name().unwrap().to_str().unwrap());
-    run_dosbox(dosbox, cwd, &cmd, &HashMap::new()).unwrap();
+    DOSBox::new()
+        .dosbox(dosbox)
+        .cwd(cwd)
+        .command(cmd)
+        .run()
+        .unwrap();
     fs::remove_file(qbasic_copy).unwrap();
     Ok(())
 }

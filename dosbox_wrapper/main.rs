@@ -1,11 +1,10 @@
-use std::collections::hash_map::HashMap;
 use std::env;
-use std::path::*;
+use std::path::PathBuf;
 
 extern crate dosbox_lib;
 
 use dosbox_lib::find::find_dosbox;
-use dosbox_lib::dosbox::run_dosbox;
+use dosbox_lib::dosbox::DOSBox;
 
 fn main() -> Result<(), String> {
     match find_dosbox() {
@@ -16,7 +15,9 @@ fn main() -> Result<(), String> {
 
 fn run(dosbox: PathBuf) -> Result<(), String> {
     let args: Vec<String> = env::args().skip(1).collect();
-    let cwd = PathBuf::from(&args[0]);
-    let command = &args[1];
-    run_dosbox(dosbox, &cwd, command, &HashMap::new())
+    DOSBox::new()
+        .dosbox(dosbox)
+        .cwd(&args[0])
+        .command(&args[1])
+        .run()
 }
