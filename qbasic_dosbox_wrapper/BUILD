@@ -6,6 +6,6 @@ rust_binary(
     name = "qbasic_dosbox_wrapper",
     srcs = ["main.rs"],
     deps = [
-        "//dosbox_wrapper:dosbox_lib",
+        "//dosbox_lib",
     ],
 )
