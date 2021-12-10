@@ -4,8 +4,6 @@ Running GW-BASIC and QBasic programs as CGI scripts
 
 Based on my original blog post [here](https://ngeor.com/2020/02/22/gwbasic-in-docker.html)
 
-You need to have `GWBASIC.EXE` or `QBASIC.EXE`, it is _not_ baked in the images.
-
 ## Tested on
 
 - Ubuntu via Vagrant
@@ -83,6 +81,10 @@ executable without runfiles / batch files.
 Defines an executable Bazel target that can run a QBasic program.
 See `gwbasic_binary` for details.
 
+## gwbasic_cgi_bin
+
+Lauches GWBASIC.EXE inside DOSBox for a CGI environment.
+
 ## Apache configuration in Vagrant
 
 ### Defaults
@@ -97,30 +99,4 @@ See `gwbasic_binary` for details.
 - Extra modules such as `mod_cgi` enabled through Vagrant
 - Assigned ownership to `www-data` group for www folders
 
-## basic-launcher-rust
-
-It creates a batch file located at the common ancestor of the input program
-and the interpreter.
-
-### GWBasic
-
-### QBasic
-
-
-
-## Apache
-
-> Runs Apache HTTPD, supporting BAS files via CGI.
-
-Usage:
-
-```
-docker run --rm \
-  --name basic-httpd \
-  -v /folder/with/basic:/basic/bin:ro \
-  -v /folder/with/program:/basic/src \
-  -p 8080:80 \
-  ngeor/basic-httpd
-```
-
-And then visit http://localhost:8080/cgi-bin/PROGRAM.BAS
+curl -v -d "hello" -H "Content-Type: text/plain" http://localhost/gw/todo

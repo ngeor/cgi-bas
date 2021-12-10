@@ -4,6 +4,7 @@ use std::fs::{self, File};
 use std::io::{self, Write};
 use std::path::*;
 use std::process::Command;
+use super::temp_file::TempFile;
 
 pub struct DOSBox {
     dosbox: PathBuf,
@@ -63,12 +64,12 @@ impl DOSBox {
         }
 
         let stdout_file_name = "OUT.TXT";
-        let stdout_file = self.cwd.join(stdout_file_name);
-        let batch_file = self.cwd.join("WRAP.BAT");
-        self.create_batch_wrapper(stdout_file_name, &batch_file).unwrap();
+        let stdout_file = TempFile::from(self.cwd.join(stdout_file_name));
+        let batch_file = TempFile::from(self.cwd.join("WRAP.BAT"));
+        self.create_batch_wrapper(stdout_file_name, batch_file.as_ref()).unwrap();
 
-        let dosbox_conf = self.cwd.join("dosbox.conf");
-        create_minimal_dosbox_config(&dosbox_conf).unwrap();
+        let dosbox_conf = TempFile::from(self.cwd.join("dosbox.conf"));
+        create_minimal_dosbox_config(dosbox_conf.as_ref()).unwrap();
 
         let result = Command::new(&self.dosbox)
             .args(&[batch_file.to_str().unwrap(), "-exit", "-noconsole", "-noautoexec", "-conf", dosbox_conf.to_str().unwrap()])
@@ -82,13 +83,10 @@ impl DOSBox {
         }
         let out = fs::read(&stdout_file).unwrap();
         io::stdout().write_all(&out).unwrap();
-        fs::remove_file(batch_file).unwrap();
-        fs::remove_file(stdout_file).unwrap();
-        fs::remove_file(dosbox_conf).unwrap();
         Ok(())
     }
 
-    fn create_batch_wrapper(&self, stdout_file_name: &str, batch_file: &PathBuf) -> Result<(), std::io::Error> {
+    fn create_batch_wrapper(&self, stdout_file_name: &str, batch_file: &Path) -> Result<(), std::io::Error> {
         let mut f = File::create(batch_file)?;
         write!(f, "@ECHO OFF\r\n")?;
         for (key, value) in &self.batch_env {
@@ -98,6 +96,10 @@ impl DOSBox {
         write!(f, "C:\r\n")?;
         write!(f, "{} > {}\r\n", self.command, stdout_file_name)?;
         Ok(())
+    }
+
+    pub fn customize<F>(&mut self, mut f: F) -> &mut Self where F : FnMut(&mut Self) -> &mut Self {
+        f(self)
     }
 }
 
