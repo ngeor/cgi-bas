@@ -36,3 +36,4 @@ function copy_binary {
 sudo rm -f /usr/lib/cgi-bin/*
 copy_binary cgi_test
 copy_binary gwbasic_cgi_bin
+copy_binary qbasic_cgi_bin

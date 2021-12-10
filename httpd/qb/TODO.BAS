@@ -45,7 +45,7 @@ SUB ListTodoItems()
     ValidateRequestMethod("GET")
 
     PRINT "Status: 200 OK"
-    PRINT "Content-Type: text/plain"
+    PRINT "Content-Type: application/json"
     PRINT "X-Powered-By: QBASIC"
     PRINT ""
 
