@@ -45,8 +45,8 @@ SUB ListTodoItems()
     ValidateRequestMethod("GET")
 
     PRINT "Status: 200 OK"
-    PRINT "Content-Type: text/plain"
-    PRINT "X-Powered-By: QBASIC"
+    PRINT "Content-Type: application/json"
+    PRINT "X-Powered-By: rusty_basic"
     PRINT ""
 
     PRINT "["
@@ -75,7 +75,7 @@ SUB CreateTodoItem()
 
     PRINT "Status: 201 Created"
     PRINT "Content-Type: text/plain"
-    PRINT "X-Powered-By: QBASIC"
+    PRINT "X-Powered-By: rusty_basic"
     PRINT ""
     PRINT "Processed " + T$
 END SUB
@@ -95,7 +95,7 @@ SUB ReadTodoItem()
     BODY$ = "{" + CHR$(34) + "item" + CHR$(34) + ": " + CHR$(34) + A$ + CHR$(34) + "}"
     PRINT "Status: 200 OK"
     PRINT "Content-Type: text/plain"
-    PRINT "X-Powered-By: QBASIC"
+    PRINT "X-Powered-By: rusty_basic"
     PRINT ""
     PRINT BODY$
 END SUB
@@ -127,7 +127,7 @@ SUB UpdateTodoItem()
 
     PRINT "Status: 204 Updated"
     PRINT "Content-Type: text/plain"
-    PRINT "X-Powered-By: QBASIC"
+    PRINT "X-Powered-By: rusty_basic"
     PRINT ""
 END SUB
 
@@ -152,7 +152,7 @@ SUB DeleteTodoItem()
     END IF
     PRINT "Status: 204 Deleted"
     PRINT "Content-Type: text/plain"
-    PRINT "X-Powered-By: QBASIC"
+    PRINT "X-Powered-By: rusty_basic"
     PRINT ""
 END SUB
 

@@ -129,4 +129,13 @@ Vagrant.configure("2") do |config|
     cd /vagrant && bazel build //...
     # TODO ./basic/httpd/httpd.sh  does not work due to permission issue copying files
   SHELL
+
+  # Download and install latest rusty_basic
+  config.vm.provision "shell", inline: <<-SHELL
+    rm -f /usr/local/bin/rusty_basic
+    curl -s -L -o /usr/local/bin/rusty_basic https://github.com/ngeor/rusty-basic/releases/latest/download/rusty_basic
+    chown root:root /usr/local/bin/rusty_basic
+    chmod 555 /usr/local/bin/rusty_basic
+    ln -f -s /usr/local/bin/rusty_basic /usr/lib/cgi-bin/
+  SHELL
 end
