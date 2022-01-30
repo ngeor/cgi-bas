@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 
 - Updated copyright year in LICENSE
 - Adding .github\FUNDING.yml
+- Updated changelog
 
 ### Refactor
 
