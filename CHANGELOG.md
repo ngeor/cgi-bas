@@ -1,6 +1,24 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Features
+
+- Added qbasic_cgi_bin script
+- Implement rusty_basic cgi-bin script
+- Removed basic-launcher-rust and perf
+
+### Miscellaneous Tasks
+
+- Updated copyright year in LICENSE
+- Adding .github\FUNDING.yml
+
+### Refactor
+
+- Move dosbox_lib to its own package
+- Added basic_lib
+
 ## [0.1.0] - 2021-12-08
 
 ### Bug Fixes
