@@ -7,12 +7,13 @@ All notable changes to this project will be documented in this file.
 
 - Added qbasic_cgi_bin script
 - Implement rusty_basic cgi-bin script
-- Removed basic-launcher-rust and perf
+- [**breaking**] Removed basic-launcher-rust and perf
 
 ### Miscellaneous Tasks
 
 - Updated copyright year in LICENSE
 - Adding .github\FUNDING.yml
+- Use cliff.toml from instarepo
 
 ### Refactor
 
